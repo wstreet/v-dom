@@ -31,8 +31,8 @@ function walk(oldNode, newNode, index, patches) {
         oldNode.tagName === newNode.tagName &&
         oldNode.key === newNode.key
     ) { // 比较attrs和children
-        const attrPatches = diffAttrs(oldNode, newNode);
-        if (attrPatches) {
+        const attrsPatches = diffAttrs(oldNode, newNode);
+        if (attrsPatches) {
             currentPatch.push({
                 type: ATTRS,
                 content: attrPatches
@@ -56,7 +56,36 @@ function walk(oldNode, newNode, index, patches) {
 
 // diff attrs
 function diffAttrs(oldNode, newNode) {
+    let count = 0
+    let oldAttrs = oldNode.attrs
+    let newAttrs = newNode.attrs
 
+    let key, value
+    let attrsPatches = {}
+
+    // 被移除了一下attr
+    for (const key in oldAttrs) {
+        value = oldAttrs[key]
+        if (newAttrs[key] !== value) {
+            count++
+            attrsPatches[key] = newAttrs[key]
+        }
+    }
+
+    // 存在新增的attr
+    for (const key in newAttrs) {
+        value = newAttrs[key]
+        if (!oldAttrs.hasOwnProperty(key)) {
+            count++
+            attrsPatches[key] = value
+        }
+    }
+
+    if (count === 0) {
+        return null
+    }
+
+    return attrsPatches
 }
 
 // diff入口
