@@ -5,6 +5,19 @@ const ATTRS = 1
 const TEXT = 2
 const REORDER = 3
 
+// 设置节点唯一标识
+let key_id = 0
+
+
+// diff入口
+function diff(oldTree, newTree) {
+    let index = 0
+    let patches = {} // 用来记录每个节点差异的补丁对象
+    walk(oldTree, newTree, index, patches)
+    return patches
+}
+
+
 /**
  * walk 遍历查找节点差异
  * @param  { Object } oldNode
@@ -35,7 +48,7 @@ function walk(oldNode, newNode, index, patches) {
         if (attrsPatches) {
             currentPatch.push({
                 type: ATTRS,
-                content: attrPatches
+                attrs: attrPatches
             })
         }
 
@@ -44,7 +57,7 @@ function walk(oldNode, newNode, index, patches) {
     } else { // replace
         currentPatch.push({
             type: REPLACE,
-            content: newNode
+            node: newNode
         })
     }
 
@@ -60,7 +73,7 @@ function diffAttrs(oldNode, newNode) {
     let oldAttrs = oldNode.attrs
     let newAttrs = newNode.attrs
 
-    let key, value
+    let value
     let attrsPatches = {}
 
     // 被移除了一下attr
@@ -88,10 +101,21 @@ function diffAttrs(oldNode, newNode) {
     return attrsPatches
 }
 
-// diff入口
-function diff(oldTree, newTree) {
-    let index = 0
-    let patches = {} // 用来记录每个节点差异的补丁对象
-    walk(oldTree, newTree, index, patches)
-    return patches
+
+function diffChildren(oldChildren, newChildren, index, patches) {
+
+    let currentNodeIndex = index
+
+    oldChildren.forEach((child, index) => {
+        key_id++
+        let newChild = newChildren[index]
+
+        currentNodeIndex = key_id
+
+        // 递归继续比较
+        walk(child, newChild, currentNodeIndex, patches)
+    })
+
 }
+
+export default diff
