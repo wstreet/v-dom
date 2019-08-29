@@ -1,9 +1,11 @@
 import _ from '../utils'
+import {
+    REPLACE,
+    ATTRS,
+    TEXT,
+    REORDER
+} from './constant'
 
-const REPLACE = 0
-const ATTRS = 1
-const TEXT = 2
-const REORDER = 3
 
 // 设置节点唯一标识
 let key_id = 0

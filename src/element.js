@@ -52,6 +52,5 @@ const el = (tagName, attrs, children) => {
 
 
 export default el
-// module.exports = el
 
 
