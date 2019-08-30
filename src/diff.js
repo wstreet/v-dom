@@ -35,6 +35,7 @@ function walk(oldNode, newNode, index, patches) {
     // oldNode 被remove掉
     if (oldNode === null || oldNode === undefined) {
         // list diff来处理
+        diffList(oldList, newList, key)
     } else if (_.isString(oldNode) && _.isString(newNode)) { // 处理字符串
         if (oldNode !== newNode) {
             currentPatch.push({
@@ -117,6 +118,18 @@ function diffChildren(oldChildren, newChildren, index, patches) {
         // 递归继续比较
         walk(child, newChild, currentNodeIndex, patches)
     })
+
+}
+
+
+/**
+ * Diff two list in O(N).
+ * @param {Array} oldList - 原始列表
+ * @param {Array} newList - 经过一些操作的得出的新列表
+ * @return {Object} - {moves: <Array>}
+ *                  - moves list操作记录的集合
+ */
+function diffList(oldList, newList, key) {
 
 }
 
