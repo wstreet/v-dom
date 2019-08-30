@@ -1,4 +1,5 @@
-import _ from '../utils'
+import _ from './utils'
+import diffList from './listDiff'
 import {
     REPLACE,
     ATTRS,
@@ -35,7 +36,7 @@ function walk(oldNode, newNode, index, patches) {
     // oldNode 被remove掉
     if (oldNode === null || oldNode === undefined) {
         // list diff来处理
-        diffList(oldList, newList, key)
+
     } else if (_.isString(oldNode) && _.isString(newNode)) { // 处理字符串
         if (oldNode !== newNode) {
             currentPatch.push({
@@ -56,7 +57,7 @@ function walk(oldNode, newNode, index, patches) {
         }
 
         // 递归diff子节点
-        diffChildren(oldNode.children, newNode.children, index, patches)
+        diffChildren(oldNode.children, newNode.children, index, patches, currentPatch)
     } else { // replace
         currentPatch.push({
             type: REPLACE,
@@ -105,8 +106,17 @@ function diffAttrs(oldNode, newNode) {
 }
 
 
-function diffChildren(oldChildren, newChildren, index, patches) {
+function diffChildren(oldChildren, newChildren, index, patches, currentPatch) {
+    let diffs = listDiff(oldChildren, newChildren, 'key')
+    newChildren = diffs.children
 
+    if (diffs.moves.length) {
+        let reorderPatch = { type: REORDER, moves: diffs.moves }
+        currentPatch.push(reorderPatch)
+    }
+
+
+    // 存放当前node的标识，初始化值为 0
     let currentNodeIndex = index
 
     oldChildren.forEach((child, index) => {
@@ -121,16 +131,5 @@ function diffChildren(oldChildren, newChildren, index, patches) {
 
 }
 
-
-/**
- * Diff two list in O(N).
- * @param {Array} oldList - 原始列表
- * @param {Array} newList - 经过一些操作的得出的新列表
- * @return {Object} - {moves: <Array>}
- *                  - moves list操作记录的集合
- */
-function diffList(oldList, newList, key) {
-
-}
 
 export default diff
