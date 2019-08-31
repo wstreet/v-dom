@@ -107,7 +107,7 @@ function diffAttrs(oldNode, newNode) {
 
 
 function diffChildren(oldChildren, newChildren, index, patches, currentPatch) {
-    let diffs = listDiff(oldChildren, newChildren, 'key')
+    let diffs = diffList(oldChildren, newChildren, 'key')
     newChildren = diffs.children
 
     if (diffs.moves.length) {

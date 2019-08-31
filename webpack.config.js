@@ -1,16 +1,25 @@
+const TerserPlugin = require('terser-webpack-plugin')
 
 
 module.exports = {
-    entry: __dirname + '/src/index.js',
-    output: {
-        filename: 'bundle.js',
-        path: __dirname + 'dist'
+    mode: 'none',
+    entry: {
+        'vdom': './src/index.js',
+        'vdom.min': './src/index.js',
     },
-    devtool: 'source-map',
-    devServer: {
-        contentBase: "./dist", // 本地服务器所加载文件的目录
-        port: "8088",   // 设置端口号为8088
-        inline: true, // 文件修改后实时刷新
-        historyApiFallback: true, //不跳转
+    output: {
+        filename: '[name].js',
+        path: __dirname + '/dist',
+        library: "vdom",
+        libraryExport: 'default',
+        libraryTarget: 'umd'
+    },
+    optimization: {
+        minimize: true,
+        minimizer: [
+            new TerserPlugin({
+                include: /\.min\.js$/
+            })
+        ]
     }
 }

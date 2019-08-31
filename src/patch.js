@@ -113,3 +113,10 @@ function reorderChildren(node, moves) {
         }
     })
 }
+
+patch.REPLACE = REPLACE
+patch.ATTRS = ATTRS
+patch.TEXT = TEXT
+patch.REORDER = REORDER
+
+export default patch
