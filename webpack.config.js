@@ -9,7 +9,7 @@ module.exports = {
     },
     output: {
         filename: '[name].js',
-        path: __dirname + '/dist',
+        path: __dirname + '/lib',
         library: "vdom",
         libraryExport: 'default',
         libraryTarget: 'umd'

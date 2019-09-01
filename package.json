@@ -1,14 +1,26 @@
 {
-  "name": "v-dom",
-  "version": "1.0.0",
+  "name": "vdom.js",
+  "version": "1.0.4",
   "description": "a demo of v-dom",
   "main": "index.js",
   "scripts": {
     "build": "webpack",
-    "publish": "npm run build && ",
+    "prepublish": "npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "https://github.com/wstreet",
+  "bugs": {
+    "url": "https://github.com/wstreet/v-dom/issues"
+  },
+  "homepage": "https://github.com/wstreet/v-dom",
+  "keywords": [
+    "virtual",
+    "diff"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wstreet/v-dom"
+  },
   "license": "ISC",
   "devDependencies": {
     "terser-webpack-plugin": "^1.4.1",
